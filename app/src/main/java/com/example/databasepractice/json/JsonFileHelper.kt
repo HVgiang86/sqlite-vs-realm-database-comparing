@@ -11,11 +11,11 @@ import java.nio.charset.StandardCharsets
 
 
 object JsonFileHelper {
-    private val staffList = mutableListOf<Staff>()
+    val staffList = mutableListOf<Staff>()
     private const val filename = "data.json"
 
     private fun readJsonStringFromFile(context: Context): String {
-        val jsonFile = File(context.filesDir.path + "/result.json")
+        val jsonFile = File(context.filesDir.path + "/data.json")
         Log.d("File Management Helper", "File Path: " + jsonFile.path)
         var result = ""
 
@@ -47,8 +47,8 @@ object JsonFileHelper {
     fun initSampleData(context: Context) {
         try {
             val array = JSONArray(readJsonStringFromFile(context))
-
-            val range = 0.rangeTo(array.length())
+            Log.d("JSON DATA", "array crawled, length: ${array.length()}")
+            val range = 0.until(array.length())
             for (i in range) {
                 val jsonObject = array.getJSONObject(i)
                 val jobTile = jsonObject.getString("jobTitle")
@@ -63,5 +63,7 @@ object JsonFileHelper {
             e.printStackTrace()
         }
     }
+
+
 }
 

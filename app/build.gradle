@@ -44,4 +44,5 @@ dependencies {
     apply plugin: 'kotlin-android-extensions'
     implementation 'androidx.sqlite:sqlite-framework:2.2.0'
     implementation 'androidx.sqlite:sqlite-ktx:2.2.0'
+    implementation 'io.realm:realm-android:0.84.1'
 }

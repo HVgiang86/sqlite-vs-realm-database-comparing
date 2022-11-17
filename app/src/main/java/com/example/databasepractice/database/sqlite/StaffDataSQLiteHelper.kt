@@ -13,9 +13,6 @@ class StaffDataSQLiteHelper(context: Context) :
         const val TAG = "SQLite Helper Tag"
     }
 
-
-
-
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(StaffDataContract.SQL_CREATE_ENTRIES)
         Log.d(TAG,"DB created!")
