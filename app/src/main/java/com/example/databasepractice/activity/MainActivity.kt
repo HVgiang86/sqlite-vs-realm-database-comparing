@@ -11,6 +11,7 @@ import com.example.databasepractice.adapter.DataAdapter
 import com.example.databasepractice.database.dao.SQLiteDAO
 import com.example.databasepractice.database.realm.StaffDataRealmHelper
 import com.example.databasepractice.json.JsonFileHelper
+import io.realm.kotlin.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

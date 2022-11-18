@@ -20,13 +20,16 @@ class StaffDataRealmHelper(context: Context) {
         Log.d("Realm Log","Successfully opened realm: ${realm.configuration.name}")
     }
 
-    suspend fun insert(staffList: MutableList<Staff>) {
+    fun insert(staffList: MutableList<Staff>) {
         val startActionTimePoint = System.currentTimeMillis()
-
+        var staff = Staff()
         for (i in 0..99999) {
-            staffList[i].id = i
-            realm.write {
-                this.copyToRealm(staffList[i % 1000])
+            staff.id = i
+            staff.jobTitle = staffList[i % 1000].jobTitle
+            staff.name = staffList[i % 1000].name
+            staff.email = staffList[i % 1000].email
+            realm.writeBlocking {
+                this.copyToRealm(staff)
             }
             Log.d("Realm Log","Inserted #$i")
         }
@@ -35,9 +38,9 @@ class StaffDataRealmHelper(context: Context) {
         Log.d("Realm Log", "insertion time of sqlite: ${SqliteRealmComparing.realmInsertTime}")
     }
 
-    suspend fun update(staffList: MutableList<Staff>) {
+    fun update(staffList: MutableList<Staff>) {
         for (i in 0..99999) {
-            realm.write {
+            realm.writeBlocking {
                 val staff: Staff? =
                     this.query<Staff>("id == $0", i).first().find()
 
@@ -51,9 +54,9 @@ class StaffDataRealmHelper(context: Context) {
 
     }
 
-    suspend fun delete() {
+    fun delete() {
         for (i in 0..99999) {
-            realm.write {
+            realm.writeBlocking {
                 val staff: Staff =
                     this.query<Staff>("id == $0", i).first().find()!!
                 delete(staff)
