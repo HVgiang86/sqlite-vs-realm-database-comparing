@@ -1,22 +1,27 @@
 package com.example.databasepractice.activity
 
 import android.annotation.TargetApi
-import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.Data
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.databasepractice.R
 import com.example.databasepractice.adapter.DataAdapter
 import com.example.databasepractice.database.dao.SQLiteDAO
+import com.example.databasepractice.database.realm.StaffDataRealmHelper
 import com.example.databasepractice.json.JsonFileHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val SQLITE_MODE = 1
+        const val REALM_MODE = 2
+    }
+
     lateinit var sqlCursor: Cursor
     lateinit var adapter: DataAdapter
+    var dbType = SQLITE_MODE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +36,55 @@ class MainActivity : AppCompatActivity() {
 
         val dao = SQLiteDAO(this)
         dao.open()
+        val realmHelper = StaffDataRealmHelper(this)
+        realmHelper.open()
 
         insert_btn.setOnClickListener {
-            dao.insert(JsonFileHelper.staffList)
+            if (dbType == SQLITE_MODE)
+                dao.insert(JsonFileHelper.staffList)
+            else
+                realmHelper.insert(JsonFileHelper.staffList)
         }
 
-        update_btn.setOnClickListener{
+        update_btn.setOnClickListener {
             dao.update(JsonFileHelper.staffList)
         }
 
-        delete_btn.setOnClickListener{
+        delete_btn.setOnClickListener {
             dao.delete()
         }
 
-        read_btn.setOnClickListener{
+        read_btn.setOnClickListener {
             sqlCursor = dao.read()
             initRecyclerView()
         }
+
+        db_type_switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                dbType = SQLITE_MODE
+                db_type_label.text = "SQLite"
+            }
+            else {
+                dbType = REALM_MODE
+                db_type_label.text = "Realm"
+            }
+        }
+    }
+
+    fun insert() {
+
+    }
+
+    fun update() {
+
+    }
+
+    fun delete() {
+
+    }
+
+    fun read() {
+
 
     }
 
@@ -80,4 +117,6 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+
 }

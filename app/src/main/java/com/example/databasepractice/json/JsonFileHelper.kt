@@ -54,7 +54,7 @@ object JsonFileHelper {
                 val jobTile = jsonObject.getString("jobTitle")
                 val email = jsonObject.getString("email")
                 val name = jsonObject.getString("name")
-                val staff = Staff(jobTile,email,name)
+                val staff = Staff(0,jobTile,email,name)
                 Log.d("JSON DATA", "staff: job:$jobTile; email:$email; name:$name")
                 staffList.add(staff)
             }
